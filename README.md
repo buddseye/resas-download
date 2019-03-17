@@ -1,12 +1,13 @@
 # resas-download
 RESAS APIを手軽に実行するHTMLファイル
 
+![screenshot](./doc/screenshot.png)
+
 ## 使い方
 - `index.html`をローカルにコピーし、ブラウザで開く。
 - `API-KEY`にAPIキーを入力する。
 - https://opendata.resas-portal.go.jp/ に続くURLを `API` に入力し、ボタンで実行。
 
-![screenshot](./doc/screenshot.png)
 
 ## リンク
 - [RESAS-API](https://opendata.resas-portal.go.jp/)
