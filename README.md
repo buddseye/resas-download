@@ -8,7 +8,6 @@ RESAS APIを手軽に実行するHTMLファイル
 - `API-KEY`にAPIキーを入力する。
 - https://opendata.resas-portal.go.jp/ に続くURLを `API` に入力し、ボタンで実行。
 
-
 ## リンク
 - [RESAS-API](https://opendata.resas-portal.go.jp/)
   - APIキー発行にはアカウント登録が必要
