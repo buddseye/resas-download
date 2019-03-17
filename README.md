@@ -11,5 +11,5 @@ RESAS APIを手軽に実行するHTMLファイル
 
 ## リンク
 - [RESAS-API](https://opendata.resas-portal.go.jp/)
-  - APIキー発にはアカウント登録が必要
+  - APIキー発行にはアカウント登録が必要
 - [RESAS-API仕様書](https://opendata.resas-portal.go.jp/docs/api/v1/index.html)
