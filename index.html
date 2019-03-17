@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>RESAS API</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <script>
+      function getRequest(apiKey, api, callback) {
+        const url = "https://opendata.resas-portal.go.jp/" + api;
+        $.ajax({
+          url: url,
+          type: "GET",
+          headers: {
+            "X-API-KEY": apiKey
+          },
+          async: "false"
+        })
+          .done(callback)
+          .fail(function(jqXHR, textStatus, errorThrown) {
+            alert(
+              String(jqXHR.status) +
+                " " +
+                String(textStatus) +
+                " " +
+                String(errorThrown.message)
+            );
+          });
+      }
+
+      function downloadFromWindow(data) {
+        const content = JSON.stringify(data);
+        const bom = new Uint8Array([0xef, 0xbb, 0xbf]);
+        const mimeType = "text/plain";
+        const name = "resas.json";
+        const blob = new Blob([bom, content], { type: mimeType });
+        const a = document.createElement("a");
+        a.download = name;
+        a.target = "_blank";
+        if (window.navigator.msSaveBlob) {
+          // for IE
+          window.navigator.msSaveBlob(blob, name);
+        } else if (window.URL && window.URL.createObjectURL) {
+          // for Firefox
+          a.href = window.URL.createObjectURL(blob);
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        } else if (window.webkitURL && window.webkitURL.createObject) {
+          // for Chrome
+          a.href = window.webkitURL.createObjectURL(blob);
+          a.click();
+        } else {
+          // for Safari
+          window.open(
+            "data:" + mimeType + ";base64," + window.Base64.encode(content),
+            "_blank"
+          );
+        }
+      }
+
+      function pushSampleButton() {
+        const api = $(".api").val();
+        const apiKey = $(".api-key").val();
+        getRequest(apiKey, api, function(result_data) {
+          $(".result").val(JSON.stringify(result_data, null, 2));
+        });
+      }
+
+      function pushDownloadButton() {
+        const api = $(".api").val();
+        const apiKey = $(".api-key").val();
+        getRequest(apiKey, api, downloadFromWindow);
+      }
+
+      $(function() {
+        $(".result").val("");
+        $(".sample").on("click", pushSampleButton);
+        $(".download").on("click", pushDownloadButton);
+      });
+    </script>
+
+    <table class="input">
+      <tr>
+        <td>API-KEY:</td>
+        <td>
+          <input class="api-key" type="text" value="" />
+        </td>
+      </tr>
+      <tr>
+        <td>API:</td>
+        <td>
+          <input
+            class="api"
+            type="text"
+            name="name"
+            value="api/v1/prefectures"
+          />
+          <button class="sample">Sample</button>
+          <button class="download">Download</button>
+        </td>
+      </tr>
+    </table>
+
+    <hr />
+    Sample:<br />
+    <textarea class="result" value=""></textarea>
+
+    <style type="text/css">
+      .api,
+      .api-key {
+        width: 400px;
+      }
+      .result {
+        height: 80vh;
+        width: 80vw;
+        min-width: 500px;
+        font-size: small;
+      }
+    </style>
+  </body>
+</html>
