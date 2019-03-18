@@ -29,11 +29,14 @@
           });
       }
 
-      function downloadFromWindow(data) {
+      function downloadFromWindow(data, options) {
+        if (!options) {
+          options = {};
+        }
         const content = JSON.stringify(data);
         const bom = new Uint8Array([0xef, 0xbb, 0xbf]);
         const mimeType = "text/plain";
-        const name = "resas.json";
+        const name = options["filename"] ? options["filename"] + ".json" : "resas.json";
         const blob = new Blob([bom, content], { type: mimeType });
         const a = document.createElement("a");
         a.download = name;
@@ -71,7 +74,11 @@
       function pushDownloadButton() {
         const api = $(".api").val();
         const apiKey = $(".api-key").val();
-        getRequest(apiKey, api, downloadFromWindow);
+        const filename = api.split("?")[0].split("/").slice(-1);
+        const downloadFunction = function(data) {
+          return downloadFromWindow(data, { filename: filename });
+        }
+        getRequest(apiKey, api, downloadFunction);
       }
 
       $(function() {
